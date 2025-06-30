@@ -6,10 +6,31 @@ import { UpdateStrukturDto } from './dto/update-struktur.dto';
 @Injectable()
 export class StrukturService {
   async findAll() {
-    const { data, error } = await supabase.from('Struktur_Organisasi').select('*');
+    const { data, error } = await supabase
+      .from('Struktur_Organisasi')
+      .select(`
+        ID_Struktur,
+        Periode,
+        Petugas,
+        PetugasDetail:Petugas (
+          NIP,
+          Nama_Depan_Petugas,
+          Nama_Belakang_Petugas,
+          No_Telepon_Petugas,
+          Foto_Petugas,
+          Masa_Bakti,
+          ID_Jabatan,
+          JabatanDetail:Jabatan (
+            Nama_Jabatan
+          )
+        )
+      `);
+
     if (error) throw new BadRequestException(error.message);
     return data;
   }
+
+
 
   async findOne(id: string) {
     const { data, error } = await supabase
