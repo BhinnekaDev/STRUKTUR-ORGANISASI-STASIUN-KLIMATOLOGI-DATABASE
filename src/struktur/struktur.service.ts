@@ -1,46 +1,77 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { supabase } from '../supabase/supabase.client';
-import { CreateStrukturDto } from './dto/create-struktur.dto';
-import { UpdateStrukturDto } from './dto/update-struktur.dto';
+import { CreateStrukturOrganisasiDto } from './dto/create-struktur.dto';
+import { UpdateStrukturOrganisasiDto } from './dto/update-struktur.dto';
+import { logAktivitas } from '../utils/logAktivitas';
 
 @Injectable()
-export class StrukturService {
+export class StrukturOrganisasiService {
+  private readonly table = 'struktur_organisasi';
+
   async findAll() {
-    const { data, error } = await supabase.from('Struktur_Organisasi').select('*');
-    if (error) throw new BadRequestException(error.message);
+    const { data, error } = await supabase
+      .from(this.table)
+      .select(`
+        *,
+        petugas:nip (
+          nip,
+          nama_lengkap,
+          no_telepon,
+          foto_pegawai
+        )
+      `)
+      .order('tmt', { ascending: false });
+
+    if (error) throw error;
     return data;
   }
 
   async findOne(id: string) {
     const { data, error } = await supabase
-      .from('Struktur_Organisasi')
+      .from(this.table)
       .select('*')
-      .eq('ID_Struktur', id)
+      .eq('id_struktur', id)
       .single();
+
     if (error || !data) throw new NotFoundException('Struktur tidak ditemukan');
     return data;
   }
 
-  async create(dto: CreateStrukturDto) {
-    const { error } = await supabase.from('Struktur_Organisasi').insert(dto);
-    if (error) throw new BadRequestException(error.message);
-    return { message: 'Struktur berhasil ditambahkan' };
+  async create(dto: CreateStrukturOrganisasiDto, user_id: string) {
+    const { error } = await supabase.from(this.table).insert(dto);
+    if (error) throw error;
+
+    await logAktivitas(
+      'struktur-organisasi',
+      'Menambahkan struktur',
+      `Petugas: ${dto.petugas}, Jabatan: ${dto.jabatan}, TMT: ${dto.tmt}`
+    );
+    return { message: 'Struktur organisasi berhasil ditambahkan' };
   }
 
-  async update(id: string, dto: UpdateStrukturDto) {
-    const { data, error } = await supabase
-      .from('Struktur_Organisasi')
+  async update(id: string, dto: UpdateStrukturOrganisasiDto, user_id: string) {
+    const { error } = await supabase
+      .from(this.table)
       .update(dto)
-      .eq('ID_Struktur', id)
-      .select()
-      .single();
-    if (error || !data) throw new NotFoundException('Gagal memperbarui struktur');
-    return { message: 'Struktur berhasil diperbarui', data };
+      .eq('id_struktur', id);
+
+    if (error) throw error;
+
+    await logAktivitas(
+      'struktur-organisasi',
+      'Memperbarui struktur',
+      `ID: ${id}, Petugas: ${dto.petugas}, Jabatan: ${dto.jabatan}, TMT: ${dto.tmt}`
+    );
+    return { message: 'Struktur organisasi berhasil diperbarui' };
   }
 
-  async delete(id: string) {
-    const { error } = await supabase.from('Struktur_Organisasi').delete().eq('ID_Struktur', id);
-    if (error) throw new BadRequestException(error.message);
-    return { message: 'Struktur berhasil dihapus' };
+  async remove(id: string) {
+    const { error } = await supabase
+      .from(this.table)
+      .delete()
+      .eq('id_struktur', id);
+
+    if (error) throw error;
+    return { message: 'Struktur organisasi berhasil dihapus' };
   }
 }

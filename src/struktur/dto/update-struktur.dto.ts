@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/swagger';
-import { CreateStrukturDto } from './create-struktur.dto';
+import { CreateStrukturOrganisasiDto } from './create-struktur.dto';
 
-export class UpdateStrukturDto extends PartialType(CreateStrukturDto) {}
+export class UpdateStrukturOrganisasiDto extends PartialType(CreateStrukturOrganisasiDto) {}

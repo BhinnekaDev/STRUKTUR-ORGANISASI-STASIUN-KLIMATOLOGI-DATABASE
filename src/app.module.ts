@@ -10,6 +10,8 @@ import { JabatanModule } from './jabatan/jabatan.module';
 import { PetugasService } from './petugas/petugas.service';
 import { PetugasModule } from './petugas/petugas.module';
 import { StrukturModule } from './struktur/struktur.module';
+import { AktivitasController } from './aktivitas/aktivitas.controller';
+import { AktivitasModule } from './aktivitas/aktivitas.module';
 
 @Module({
   imports: [
@@ -26,8 +28,10 @@ import { StrukturModule } from './struktur/struktur.module';
     PetugasModule,
 
     StrukturModule,
+
+    AktivitasModule,
   ],
-  controllers: [AppController, JabatanController],
+  controllers: [AppController, JabatanController, AktivitasController],
   providers: [AppService, JabatanService, PetugasService],
 })
 export class AppModule {}

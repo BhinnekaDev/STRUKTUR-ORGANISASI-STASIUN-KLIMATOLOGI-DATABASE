@@ -1,22 +1,25 @@
+// src/petugas/petugas.controller.ts
 import {
   Controller,
-  Get,
   Post,
+  Get,
   Body,
   Param,
-  Delete,
   Put,
-  Headers,
+  Delete,
 } from '@nestjs/common';
 import { PetugasService } from './petugas.service';
 import { CreatePetugasDto } from './dto/create-petugas.dto';
 import { UpdatePetugasDto } from './dto/update-petugas.dto';
-import { ApiTags, ApiHeader } from '@nestjs/swagger';
 
-@ApiTags('petugas')
 @Controller('petugas')
 export class PetugasController {
   constructor(private readonly petugasService: PetugasService) {}
+
+  @Post()
+  create(@Body() dto: CreatePetugasDto) {
+    return this.petugasService.create(dto);
+  }
 
   @Get()
   findAll() {
@@ -28,22 +31,13 @@ export class PetugasController {
     return this.petugasService.findOne(nip);
   }
 
-  @Post()
-  create(@Body() dto: CreatePetugasDto, @Headers('user_id') user_id: string) {
-    return this.petugasService.create(dto);
-  }
-
   @Put(':nip')
-  update(
-    @Param('nip') nip: string,
-    @Body() dto: UpdatePetugasDto,
-    @Headers('user_id') user_id: string,
-  ) {
+  update(@Param('nip') nip: string, @Body() dto: UpdatePetugasDto) {
     return this.petugasService.update(nip, dto);
   }
 
   @Delete(':nip')
-  remove(@Param('nip') nip: string, @Headers('user_id') user_id: string) {
-    return this.petugasService.delete(nip);
+  remove(@Param('nip') nip: string) {
+    return this.petugasService.remove(nip);
   }
 }

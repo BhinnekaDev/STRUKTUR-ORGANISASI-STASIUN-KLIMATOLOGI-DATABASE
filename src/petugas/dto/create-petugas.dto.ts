@@ -1,44 +1,54 @@
-import { IsNotEmpty, IsString, IsUUID, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePetugasDto {
   @ApiProperty({ example: '1987654321' })
   @IsNotEmpty()
   @IsString()
-  NIP: string;
+  nip: string;
 
-  @ApiProperty({ example: 'uuid-jabatan', required: true })
-  @IsUUID()
-  ID_Jabatan: string;
-
-  @ApiProperty({ example: 'Kepala Seksi' })
-  @IsOptional()
-  @IsString()
-  Jabatan?: string;
-
-  @ApiProperty({ example: 'Budi' })
+  @ApiProperty({ example: 'Siti Aminah' })
   @IsNotEmpty()
   @IsString()
-  Nama_Depan_Petugas: string;
+  nama_lengkap: string;
 
-  @ApiProperty({ example: 'Santoso' })
+  @ApiProperty({ example: 'S1 Geofisika' })
+  @IsOptional()
+  @IsString()
+  pendidikan_terakhir?: string;
+
+  @ApiProperty({ example: 'III/a' })
+  @IsOptional()
+  @IsString()
+  pangkat_golongan?: string;
+
+  @ApiProperty({ example: '2023-05-10' })
+  @IsOptional()
+  @IsString()
+  kgb_terakhir?: string;
+
+  @ApiProperty({ example: '2025-05-10' })
+  @IsOptional()
+  @IsString()
+  kgb_berikutnya?: string;
+
+  @ApiProperty({ example: '081234567890' })
+  @IsOptional()
+  @IsString()
+  no_telepon?: string;
+
+  @ApiProperty({ example: 'base64string.jpg' })
+  @IsOptional()
+  @IsString()
+  foto_pegawai?: string;
+
+  @ApiProperty({ example: 'JBT001' })
   @IsNotEmpty()
   @IsString()
-  Nama_Belakang_Petugas: string;
+  id_jabatan: string;
 
-  @ApiProperty({ example: '08123456789' })
+  @ApiProperty({ example: 'Jakarta, 12 Januari 1985' })
   @IsOptional()
   @IsString()
-  No_Telepon_Petugas?: string;
-
-  @IsOptional()
-    @ApiProperty({ example: 'https://example.com/foto.jpg', required: false })
-    @IsString()
-    Foto_Petugas?: string | null;
-
-
-  @ApiProperty({ example: '2020-2024' })
-  @IsOptional()
-  @IsString()
-  Masa_Bakti?: string;
+  tempat_tanggal_lahir?: string;
 }
