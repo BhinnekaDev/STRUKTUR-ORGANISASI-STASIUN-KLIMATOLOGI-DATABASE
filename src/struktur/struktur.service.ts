@@ -13,6 +13,7 @@ export class StrukturService {
   private readonly table = 'Struktur_Organisasi';
 
   async findAll() {
+<<<<<<< HEAD
     try {
       const { data: strukturData, error } = await supabase
         .from(this.table)
@@ -50,7 +51,33 @@ export class StrukturService {
         'Gagal mengambil data struktur organisasi'
       );
     }
+=======
+    const { data, error } = await supabase
+      .from('Struktur_Organisasi')
+      .select(`
+        ID_Struktur,
+        Periode,
+        Petugas,
+        PetugasDetail:Petugas (
+          NIP,
+          Nama_Depan_Petugas,
+          Nama_Belakang_Petugas,
+          No_Telepon_Petugas,
+          Foto_Petugas,
+          Masa_Bakti,
+          ID_Jabatan,
+          JabatanDetail:Jabatan (
+            Nama_Jabatan
+          )
+        )
+      `);
+
+    if (error) throw new BadRequestException(error.message);
+    return data;
+>>>>>>> dfa3a5a0077648c0403598013a74293f96b45677
   }
+
+
 
   async findOne(id: string) {
     const { data, error } = await supabase
