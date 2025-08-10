@@ -1,4 +1,4 @@
-`
+
 ---
 
 # 🏢 Struktur Organisasi Stasiun Klimatologi - Bhinneka Developer
