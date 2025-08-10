@@ -1,15 +1,15 @@
 import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateStrukturOrganisasiDto {
+export class CreateStrukturDto {
   @ApiProperty({
     example: 'STRUK001',
-    description: 'ID struktur organisasi ',
+    description: 'ID struktur organisasi (opsional, biasanya auto-generated)',
     required: false,
   })
   @IsOptional()
   @IsString()
-  id_struktur?: string;
+  ID_Struktur?: string; 
 
   @ApiProperty({
     example: '1987654321',
@@ -17,7 +17,7 @@ export class CreateStrukturOrganisasiDto {
   })
   @IsNotEmpty()
   @IsString()
-  petugas: string;
+  Petugas: string;
 
   @ApiProperty({
     example: 'Kepala Seksi Data dan Informasi',
@@ -29,9 +29,10 @@ export class CreateStrukturOrganisasiDto {
 
   @ApiProperty({
     example: '2024-01-01',
-    description: 'Tanggal mulai tugas (TMT) dalam format YYYY-MM-DD',
+    description: 'Tanggal mulai tugas (TMT)',
   })
+  
   @IsNotEmpty()
-  @IsString()
+  @IsString() 
   tmt: string;
 }

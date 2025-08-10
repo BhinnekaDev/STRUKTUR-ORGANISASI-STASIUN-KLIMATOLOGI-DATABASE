@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional, IsDateString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePetugasDto {
@@ -24,12 +24,12 @@ export class CreatePetugasDto {
 
   @ApiProperty({ example: '2023-05-10' })
   @IsOptional()
-  @IsString()
+  @IsDateString()
   kgb_terakhir?: string;
 
   @ApiProperty({ example: '2025-05-10' })
   @IsOptional()
-  @IsString()
+  @IsDateString()
   kgb_berikutnya?: string;
 
   @ApiProperty({ example: '081234567890' })
@@ -42,13 +42,13 @@ export class CreatePetugasDto {
   @IsString()
   foto_pegawai?: string;
 
-  @ApiProperty({ example: 'JBT001' })
-  @IsNotEmpty()
-  @IsString()
-  id_jabatan: string;
-
   @ApiProperty({ example: 'Jakarta, 12 Januari 1985' })
   @IsOptional()
   @IsString()
   tempat_tanggal_lahir?: string;
+
+  @ApiProperty({ example: '2022-01-01', description: 'Tanggal mulai menjabat dalam struktur organisasi' })
+  @IsNotEmpty()
+  @IsDateString()
+  tmt: string; 
 }

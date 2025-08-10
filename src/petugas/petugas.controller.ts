@@ -26,6 +26,11 @@ export class PetugasController {
     return this.petugasService.findAll();
   }
 
+  @Get('count')
+  getCount() {
+    return this.petugasService.getCount();
+  }
+
   @Get(':nip')
   findOne(@Param('nip') nip: string) {
     return this.petugasService.findOne(nip);
